@@ -1,0 +1,69 @@
+public class QTreeNode {
+    private int x, y; // Coordinates of the upper left corner of the quadrant
+    private int size; // Size of the quadrant
+    private int color; // Average color of the pixels in the quadrant
+    private QTreeNode parent; // Parent node
+    private QTreeNode[] children; // Children nodes
+
+    // Default constructor
+    public QTreeNode() {
+        x = 0;
+        y = 0;
+        size = 0;
+        color = 0;
+        parent = null;
+        children = new QTreeNode[4];
+        for (int i = 0; i < children.length; i++) {
+            children[i] = null;
+        }
+    }
+
+    // Parameterized constructor
+    public QTreeNode(int xcoord, int ycoord, int theSize, int theColor) {
+        this.x = xcoord;
+        this.y = ycoord;
+        this.size = theSize;
+        this.color = theColor;
+        this.parent = null; // The parent will be set using setParent method
+        this.children = new QTreeNode[4]; // Initialize children array with null values
+    }
+
+    // Getters and setters
+    public int getx() { return x; }
+    public int gety() { return y; }
+    public int getSize() { return size; }
+    public int getColor() { return color; }
+    public QTreeNode getParent() { return parent; }
+
+    public void setx(int newx) { x = newx; }
+    public void sety(int newy) { y = newy; }
+    public void setSize(int newSize) { size = newSize; }
+    public void setColor(int newColor) { color = newColor; }
+    public void setParent(QTreeNode newParent) { parent = newParent; }
+
+    public QTreeNode getChild(int index) {
+        if (index < 0 || index >= children.length) {
+            throw new IllegalArgumentException("Child index is out of bounds");
+        }
+        return children[index];
+    }
+
+    public void setChild(QTreeNode newChild, int index) {
+        if (index < 0 || index >= children.length) {
+            throw new IllegalArgumentException("Child index is out of bounds");
+        }
+        children[index] = newChild;
+        newChild.setParent(this); // Set this node as the parent of the newChild
+    }
+
+    public boolean contains(int xcoord, int ycoord) {
+        return xcoord >= x && xcoord < x + size && ycoord >= y && ycoord < y + size;
+    }
+
+    public boolean isLeaf() {
+        for (QTreeNode child : children) {
+            if (child != null) return false;
+        }
+        return true;
+    }
+}
